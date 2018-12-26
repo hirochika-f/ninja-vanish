@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 matplotlib = "*"
 cython = "*"
+opencv-python = "*"
+pip = "==18.0"
 
 [dev-packages]
 
