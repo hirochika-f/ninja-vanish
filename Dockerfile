@@ -1,5 +1,3 @@
-# Copyright (c) 2018 Ricoh Company, Ltd. All Rights Reserved.
-
 FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 MAINTAINER hirochika-f
 
