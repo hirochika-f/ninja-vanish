@@ -7,6 +7,8 @@ verify_ssl = true
 
 [packages]
 torch = "==0.4.0"
+numpy = "*"
+torchvision = "==0.2.1"
 
 [requires]
 python_version = "3.5"
