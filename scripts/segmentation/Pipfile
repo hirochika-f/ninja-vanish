@@ -6,6 +6,13 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+torch = "==0.4.1"
+numpy = "*"
+opencv-python = "*"
+scipy = "*"
+torchvision = "==0.2.1"
+tqdm = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.5"
