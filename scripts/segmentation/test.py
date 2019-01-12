@@ -38,6 +38,23 @@ def visualize_result(data, pred, args):
                 img_name.replace('.jpg', '.png')), pred_color)
 
 
+def hollowing(data, pred, args):
+    (img, info) = data
+
+    # prediction
+    pred_color = colorEncodeDesignated(pred, colors, 12)
+    pred_color = np.array(pred_color).astype(np.uint8)
+
+    # make hollow image
+    hollow = cv2.imread(args.test_imgs[0])
+    print(np.where(pred_color != [0, 0, 0]))
+    hollow[np.where(pred_color != [0, 0, 0])] = 0
+
+    img_name = info.split('/')[-1]
+    cv2.imwrite(os.path.join(args.result,
+                'hollow.jpg'), hollow)
+
+
 def test(segmentation_module, loader, args):
     segmentation_module.eval()
 
@@ -68,7 +85,7 @@ def test(segmentation_module, loader, args):
             pred = as_numpy(pred.squeeze(0).cpu())
 
         # visualization
-        visualize_result(
+        hollowing(
             (batch_data['img_ori'], batch_data['info']),
             pred, args)
 
