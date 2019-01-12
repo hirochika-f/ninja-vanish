@@ -25,8 +25,8 @@ class Equirectangular:
         """
         Parameters
         -----
-        img_name : string
-            The name of input equirectangular image.
+        im : string
+            The variable of input equirectangular image.
         """
         self._img = im
         [self._height, self._width, _] = self._img.shape
@@ -146,6 +146,27 @@ class Equirectangular:
         self.calc_perspective_positions(fov, theta, phi, height, width)
         return self._lat, self._lon
 
+    def back_perspective_image(self, pers, lat=None, lon=None):
+        """
+        Return back projected equirectangular image.
+
+        Parameters
+        ----
+        pers
+            Perspective image for back projection.
+        lat
+            Positions of perspective image of y axis.
+        lon
+            Positions of perspective image of x axis.
+        """ 
+        equi = self._img
+        if lat is None:
+            lat = self._lat
+        if lon is None:
+            lon = self._lon
+        equi[lat, lon] = perspective_image
+        return equi
+
 
 if __name__ == '__main__':
     equ_name = '/Users/hirochika/opencv/world.jpg'
@@ -154,12 +175,11 @@ if __name__ == '__main__':
     fov = 60
     theta = 0
     phi = 0
-    height = 500
-    width = 1000
-    perspective_image, equi_y, equi_x = equ.get_perspective_image(fov, theta, phi, height, width)
-    lat, lon = equ.get_perspective_positions(fov, theta, phi, height, width)
-    print(lon)
-    print(lat)
+    height = 224
+    width = 224
+
+    perspective_image, lat, lon = equ.get_perspective_image(fov, theta, phi, height, width)
+    back_img = equ.back_perspective_image(perspective_image)
 
     equi = cv2.imread(equ_name)
     equi[lat[0], lon[0]] = [0, 255, 0]
