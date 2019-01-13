@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+scikit-image = "*"
+numpy = "*"
+torch = "==0.4.0"
+torchvision = "*"
+matplotlib = "*"
+Pillow = "*"
+opencv-python = "*"
+
+[requires]
+python_version = "3.5"
