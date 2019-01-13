@@ -12,6 +12,7 @@ torch = "==0.4.0"
 torchvision = "*"
 matplotlib = "*"
 Pillow = "*"
+opencv-python = "*"
 
 [requires]
 python_version = "3.5"
