@@ -19,6 +19,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.ticker import NullLocator
 
+import cv2
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--image_folder', type=str, help='path to dataset')
 parser.add_argument('--image_path', type=str, default='data/samples', help='path to image')
@@ -171,3 +173,23 @@ for img_i, (path, detections) in enumerate(zip(imgs, img_detections)):
 
     # Print position of the most biggest person
     print(person_center_x, person_center_y)
+
+# Crop biggest person
+import equi
+
+im = cv2.imread(opt.image_path)
+img_height, img_width = im.shape[:2]
+latitude = np.linspace(-np.pi/2, np.pi/2, num=img_height)
+longtitude = np.linspace(-np.pi, np.pi, num=img_width)
+equ = equi.Equirectangular(im)
+fov = 130
+theta = np.rad2deg(longtitude[person_center_x])
+phi = np.rad2deg(latitude[person_center_y]) + 10
+height = 224
+width = 224
+
+perspective, lat, lon = equ.get_perspective_image(fov, theta, phi, height, width)
+pers_name, ext = os.path.splitext(opt.image_path)
+pers_name = pers_name + '_pers' + ext
+cv2.imwrite(pers_name, perspective)
+print('Save Perspective Image as ' + pers_name)
