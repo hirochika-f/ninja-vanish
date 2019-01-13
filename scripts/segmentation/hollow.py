@@ -50,11 +50,9 @@ def hollowing(data, pred, args):
     hollow = cv2.imread(args.test_imgs[0])
     hollow[np.where(pred_color != [0, 0, 0])] = 0
 
-    img_name = info.split('/')[-1]
-    output_filename, ext = os.path.splitext(img_name)
+    output_filename, ext = os.path.splitext(info)
     output_filename = output_filename + '_hollow' + ext
-    cv2.imwrite(os.path.join(args.result,
-                output_filename), hollow)
+    cv2.imwrite(output_filename, hollow)
 
 
 def test(segmentation_module, loader, args):
