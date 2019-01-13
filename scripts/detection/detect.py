@@ -122,11 +122,15 @@ for img_i, (path, detections) in enumerate(zip(imgs, img_detections)):
     unpad_h = opt.img_size - pad_y
     unpad_w = opt.img_size - pad_x
 
+    person_center_x = 0
+    person_center_y = 0
+
     # Draw bounding boxes and labels of detections
     if detections is not None:
         unique_labels = detections[:, -1].cpu().unique()
         n_cls_preds = len(unique_labels)
         bbox_colors = random.sample(colors, n_cls_preds)
+        max_bbox_area = 0
         for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
 
             print ('\t+ Label: %s, Conf: %.5f' % (classes[int(cls_pred)], cls_conf.item()))
@@ -136,6 +140,14 @@ for img_i, (path, detections) in enumerate(zip(imgs, img_detections)):
             box_w = ((x2 - x1) / unpad_w) * img.shape[1]
             y1 = ((y1 - pad_y // 2) / unpad_h) * img.shape[0]
             x1 = ((x1 - pad_x // 2) / unpad_w) * img.shape[1]
+
+            # Find the biggest person and calculate center of the bbox
+            if classes[int(cls_pred)] == 'person':
+                bbox_area = box_h * box_w
+                if max_bbox_area < bbox_area:
+                    person_center_x = int(x1 + box_w / 2)
+                    person_center_y = int(y1 + box_h / 2) 
+                    max_bbox_area = bbox_area
 
             color = bbox_colors[int(np.where(unique_labels == int(cls_pred))[0])]
             # Create a Rectangle patch
@@ -156,3 +168,6 @@ for img_i, (path, detections) in enumerate(zip(imgs, img_detections)):
     output_filename += '_detect'
     plt.savefig(output_filename, bbox_inches='tight', pad_inches=0.0)
     plt.close()
+
+    # Print position of the most biggest person
+    print(person_center_x, person_center_y)
