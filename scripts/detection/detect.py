@@ -188,6 +188,9 @@ phi = np.rad2deg(latitude[person_center_y]) + 10
 height = 224
 width = 224
 
+with open('/root/position.txt', 'w') as f:
+    print(theta, file=f)
+    print(phi, file=f)
 perspective, lat, lon = equ.get_perspective_image(fov, theta, phi, height, width)
 pers_name, ext = os.path.splitext(opt.image_path)
 pers_name = pers_name + '_pers' + ext
