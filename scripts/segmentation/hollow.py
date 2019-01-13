@@ -48,7 +48,6 @@ def hollowing(data, pred, args):
 
     # make hollow image
     hollow = cv2.imread(args.test_imgs[0])
-    print(np.where(pred_color != [0, 0, 0]))
     hollow[np.where(pred_color != [0, 0, 0])] = 0
 
     img_name = info.split('/')[-1]
