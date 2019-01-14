@@ -51,8 +51,12 @@ def hollowing(data, pred, args):
     hollow[np.where(pred_color != [0, 0, 0])] = 0
 
     output_filename, ext = os.path.splitext(info)
-    output_filename = output_filename + '_hollow' + ext
+    output_filename = output_filename + '_hollow'
+    mask_filename = output_filename + '_mask'
+    output_filename += ext 
+    mask_filename += ext 
     cv2.imwrite(output_filename, hollow)
+    cv2.imwrite(mask_filename, pred_color)
 
 
 def test(segmentation_module, loader, args):
