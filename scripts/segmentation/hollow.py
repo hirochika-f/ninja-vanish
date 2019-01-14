@@ -18,6 +18,7 @@ import lib.utils.data as torchdata
 import cv2
 from tqdm import tqdm
 
+
 colors = loadmat('data/color150.mat')['colors']
 
 
@@ -47,12 +48,15 @@ def hollowing(data, pred, args):
 
     # make hollow image
     hollow = cv2.imread(args.test_imgs[0])
-    print(np.where(pred_color != [0, 0, 0]))
     hollow[np.where(pred_color != [0, 0, 0])] = 0
 
-    img_name = info.split('/')[-1]
-    cv2.imwrite(os.path.join(args.result,
-                'hollow.jpg'), hollow)
+    output_filename, ext = os.path.splitext(info)
+    output_filename = output_filename + '_hollow'
+    mask_filename = output_filename + '_mask'
+    output_filename += ext 
+    mask_filename += ext 
+    cv2.imwrite(output_filename, hollow)
+    cv2.imwrite(mask_filename, pred_color)
 
 
 def test(segmentation_module, loader, args):
