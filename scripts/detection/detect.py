@@ -182,11 +182,11 @@ img_height, img_width = im.shape[:2]
 latitude = np.linspace(-np.pi/2, np.pi/2, num=img_height)
 longtitude = np.linspace(-np.pi, np.pi, num=img_width)
 equ = equi.Equirectangular(im)
-fov = 130
+fov = 120
 theta = np.rad2deg(longtitude[person_center_x])
-phi = np.rad2deg(latitude[person_center_y]) + 10
-height = 224
-width = 224
+phi = np.rad2deg(latitude[person_center_y])
+height = 1500
+width = 1500
 
 with open('/root/position.txt', 'w') as f:
     print(theta, file=f)
