@@ -12,10 +12,12 @@ def main(args):
     pers_name = resize_name + '_pers'
     hollow_name = pers_name + '_hollow'
     interpolated_name = hollow_name + '_result'
+    mask_name = hollow_name + '_mask'
     ninja_name = filename + '_ninja'
     resize_name += ext
     pers_name += ext
     hollow_name += ext
+    mask_name += ext
     interpolated_name += ext
     ninja_name += ext
 
@@ -56,13 +58,19 @@ def main(args):
     img_height, img_width = im.shape[:2]
 
     equ = equi.Equirectangular(im)
-    fov = 130
-    height = 256
-    width = 256
+    fov = 120
+    height = 640
+    width = 640
 
     _, lat, lon = equ.get_perspective_image(fov, theta, phi, height, width)
     interpolated = cv2.imread(interpolated_name)
-    back_img = equ.back_perspective_image(interpolated)
+    interpolated = cv2.resize(interpolated, (640, 640), interpolation=cv2.INTER_LANCZOS4)
+    mask = cv2.imread(mask_name, 0)
+    mask = cv2.resize(mask, (640, 640), interpolation=cv2.INTER_LANCZOS4)
+    interpolated_lat = lat[np.where(mask !=  0)]
+    interpolated_lon = lon[np.where(mask !=  0)]
+    print(interpolated_lat.shape, interpolated_lon.shape)
+    back_img = equ.back_perspective_image(interpolated, mask, interpolated_lat, interpolated_lon)
     cv2.imwrite(ninja_name, back_img)
     print('Save Perspective Image as ' + ninja_name)
 
