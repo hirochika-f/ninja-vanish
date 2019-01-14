@@ -24,7 +24,7 @@ def main(args):
 
     # Resize
     im = cv2.imread(args.img)
-    im = cv2.resize(im, (1920, 1080))
+    im = cv2.resize(im, (1920, 960))
     cv2.imwrite(resize_name, im)
 
     # Detection
@@ -52,21 +52,21 @@ def main(args):
     with open('/root/position.txt', 'r') as f:
         theta, phi = f.readlines()
         theta = float(theta[:-2])
-        phi = float(phi[-2])
+        phi = float(phi[:-2])
 
     im = cv2.imread(resize_name)
     img_height, img_width = im.shape[:2]
 
     equ = equi.Equirectangular(im)
     fov = 120
-    height = 640
-    width = 640
+    height = 1500
+    width = 1500
 
     _, lat, lon = equ.get_perspective_image(fov, theta, phi, height, width)
     interpolated = cv2.imread(interpolated_name)
-    interpolated = cv2.resize(interpolated, (640, 640), interpolation=cv2.INTER_LANCZOS4)
+    interpolated = cv2.resize(interpolated, (height, width), interpolation=cv2.INTER_LANCZOS4)
     mask = cv2.imread(mask_name, 0)
-    mask = cv2.resize(mask, (640, 640), interpolation=cv2.INTER_LANCZOS4)
+    mask = cv2.resize(mask, (height, width), interpolation=cv2.INTER_LANCZOS4)
     interpolated_lat = lat[np.where(mask !=  0)]
     interpolated_lon = lon[np.where(mask !=  0)]
     print(interpolated_lat.shape, interpolated_lon.shape)
