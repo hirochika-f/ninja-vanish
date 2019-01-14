@@ -146,7 +146,7 @@ class Equirectangular:
         self.calc_perspective_positions(fov, theta, phi, height, width)
         return self._lat, self._lon
 
-    def back_perspective_image(self, pers, lat=None, lon=None):
+    def back_perspective_image(self, pers, mask, lat=None, lon=None):
         """
         Return back projected equirectangular image.
 
@@ -164,7 +164,7 @@ class Equirectangular:
             lat = self._lat
         if lon is None:
             lon = self._lon
-        equi[lat, lon] = perspective_image
+        equi[lat, lon] = pers[np.where(mask != 0)]
         return equi
 
 
