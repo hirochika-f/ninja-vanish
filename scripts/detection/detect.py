@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.ticker import NullLocator
 
+import numpy as np
 import cv2
 
 parser = argparse.ArgumentParser()
@@ -179,8 +180,8 @@ import equi
 
 im = cv2.imread(opt.image_path)
 img_height, img_width = im.shape[:2]
-latitude = np.linspace(-np.pi/2, np.pi/2, num=img_height)
-longtitude = np.linspace(np.pi, -np.pi, num=img_width)
+latitude = np.linspace(np.pi/2, -np.pi/2, num=img_height)
+longtitude = np.linspace(-np.pi, np.pi, num=img_width)
 equ = equi.Equirectangular(im)
 fov = 120
 theta = np.rad2deg(longtitude[person_center_x])
